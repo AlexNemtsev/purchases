@@ -1,7 +1,7 @@
 import { defineConfig } from 'lint-staged/config';
 
 export default defineConfig({
-  '(*.ts|*.svelte)': ['eslint --fix --quiet', 'prettier --write', 'tsc -p tsconfig.node.json'],
-  '*.css': ['stylelint --fix', 'prettier --write'],
-  '*.json': ['prettier --write'],
+  '(*.js|*.ts|*.svelte)': ['eslint --fix --quiet'],
+  '(*.css|*.svelte)': ['stylelint --fix'],
+  '(*.js|*.ts|*.svelte|*.css|*.json)': ['prettier --write'],
 });

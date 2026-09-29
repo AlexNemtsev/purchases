@@ -87,3 +87,15 @@
 
 <div class="ticks"></div>
 <section id="spacer"></section>
+
+<style>
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: 100vw;
+    height: 100vh;
+  }
+</style>
