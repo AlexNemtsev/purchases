@@ -1,4 +1,5 @@
 import * as prettierPluginSvelte from 'prettier-plugin-svelte';
+import * as prettierPluginTailwind from 'prettier-plugin-tailwindcss';
 
 /** @type {import("prettier").Config} */
 export default {
@@ -10,5 +11,6 @@ export default {
   printWidth: 100,
   arrowParens: 'always',
   overrides: [{ files: '*.svelte', options: { parser: 'svelte' } }],
-  plugins: [prettierPluginSvelte],
+  plugins: [prettierPluginSvelte, prettierPluginTailwind],
+  tailwindStylesheet: './src/app.css',
 };

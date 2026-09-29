@@ -9,7 +9,17 @@ export default {
     'at-rule-no-unknown': [
       true,
       {
-        ignoreAtRules: ['extend', 'include', 'mixin', 'for', 'if', 'else'],
+        ignoreAtRules: [
+          'extend',
+          'include',
+          'mixin',
+          'for',
+          'if',
+          'else',
+          'plugin',
+          'theme',
+          'custom-variant',
+        ],
       },
     ],
     'block-no-empty': null,
