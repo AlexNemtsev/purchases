@@ -192,5 +192,13 @@ export default defineConfig(
     rules: {
       'import-x/no-default-export': 'off',
     },
+  },
+  {
+    // файл содержит виртуальный модуль из vite-pwa
+    files: ['./src/app/ui/ReloadPrompt.svelte'],
+    rules: {
+      'import-x/no-unresolved': 'off',
+      'no-console': 'off',
+    },
   }
 );
