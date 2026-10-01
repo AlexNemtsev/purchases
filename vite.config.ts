@@ -13,7 +13,6 @@ export default defineConfig({
     VitePWA({
       registerType: 'prompt',
       manifest: {
-        theme_color: '#F7F9FF',
         lang: 'ru',
         name: 'Закупки',
         short_name: 'Закупки',
@@ -55,5 +54,6 @@ export default defineConfig({
   },
   server: {
     open: true,
+    host: true,
   },
 });

@@ -1,6 +1,8 @@
 <script lang="ts">
   import { useRegisterSW } from 'virtual:pwa-register/svelte';
 
+  import * as AlertDialog from '$lib/components/ui/alert-dialog/';
+
   const { offlineReady, needRefresh, updateServiceWorker } = useRegisterSW({
     onRegistered(swr) {
       console.log(`SW registered: ${swr}`);
@@ -18,50 +20,26 @@
   $: toast = $offlineReady || $needRefresh;
 </script>
 
-{#if toast}
-  <div class="pwa-toast" role="alert">
-    <div class="message">
+<AlertDialog.Root open={toast}>
+  <AlertDialog.Content>
+    <AlertDialog.Header>
       {#if $offlineReady}
-        <span> App ready to work offline </span>
+        <AlertDialog.Title>Приложение готово к работе в режиме оффлайн</AlertDialog.Title>
       {:else}
-        <span> New content available, click on reload button to update. </span>
+        <AlertDialog.Title>Обновление</AlertDialog.Title>
+        <AlertDialog.Description>
+          Доступно новое содержимое. Нажмите на кнопку перезагрузки, чтобы обновить приложение.
+        </AlertDialog.Description>
       {/if}
-    </div>
-    {#if $needRefresh}
-      <button on:click={() => updateServiceWorker(true)}> Reload </button>
-    {/if}
-    <button on:click={close}> Close </button>
-  </div>
-{/if}
+    </AlertDialog.Header>
 
-<style>
-  .pwa-toast {
-    position: fixed;
-    z-index: 1;
-    right: 0;
-    bottom: 0;
-
-    margin: 16px;
-    padding: 12px;
-    border: 1px solid #8885;
-    border-radius: 4px;
-
-    text-align: left;
-
-    background-color: white;
-    box-shadow: 3px 4px 5px 0 #8885;
-  }
-
-  .pwa-toast .message {
-    margin-bottom: 8px;
-  }
-
-  .pwa-toast button {
-    margin-right: 5px;
-    padding: 3px 10px;
-    border: 1px solid #8885;
-    border-radius: 2px;
-
-    outline: none;
-  }
-</style>
+    <AlertDialog.Footer>
+      <AlertDialog.Cancel onclick={close}>Закрыть</AlertDialog.Cancel>
+      {#if $needRefresh}
+        <AlertDialog.Action onclick={() => updateServiceWorker(true)}
+          >Перезагрузить</AlertDialog.Action
+        >
+      {/if}
+    </AlertDialog.Footer>
+  </AlertDialog.Content>
+</AlertDialog.Root>
