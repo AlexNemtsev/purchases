@@ -1,7 +1,7 @@
 import { removePurchaseGroups } from './groups';
 import { removePurchaseReceipts } from './receipts';
 
-interface Purchase {
+export interface Purchase {
   id: number;
   title: string;
   date: string;
@@ -9,10 +9,16 @@ interface Purchase {
 
 const LS_KEY = 'purchases';
 
-const getPurchases = (): Purchase[] => {
+export const getPurchases = (): Purchase[] => {
   const purchases = localStorage.getItem(LS_KEY);
 
   return purchases ? JSON.parse(purchases) : [];
+};
+
+export const getPurchase = (id: number): Purchase | undefined => {
+  const purchases = getPurchases();
+
+  return purchases.find((purchase) => purchase.id === id);
 };
 
 export const addPurchase = (purchase: Omit<Purchase, 'id'>): void => {

@@ -1,16 +1,16 @@
-interface Receipt {
+export interface Receipt {
   id: number;
   purchaseId: number;
   amountCents: number;
   discountMode: 'amount' | 'percent';
   discountAmountCents: number;
-  discountPercent: number;
+  discountPromille: number;
   comment?: string;
 }
 
 const LS_KEY = 'receipts';
 
-const getReceipts = (): Receipt[] => {
+export const getReceipts = (): Receipt[] => {
   const receipts = localStorage.getItem(LS_KEY);
 
   return receipts ? JSON.parse(receipts) : [];
@@ -45,7 +45,7 @@ export const removePurchaseReceipts = (purchaseId: number): void => {
   localStorage.setItem(LS_KEY, JSON.stringify(newReceipts));
 };
 
-export const updateReceipt = (receipt: Omit<Receipt, 'purchaseId'>): void => {
+export const updateReceipt = (receipt: Receipt): void => {
   const receipts = getReceipts();
   const newReceipts = receipts.map((r) =>
     r.id === receipt.id ? { ...receipt, purchaseId: r.purchaseId } : r

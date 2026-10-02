@@ -26,7 +26,6 @@ export default defineConfig(
     },
 
     plugins: {
-      // import: importPlugin,
       'import-x': importX,
       prettier: eslintPluginPrettier,
     },
@@ -129,7 +128,6 @@ export default defineConfig(
 
       'no-nested-ternary': 'error',
       curly: ['error', 'all'],
-      'no-underscore-dangle': 'error',
       'no-alert': 'error',
 
       'template-curly-spacing': 'error',
@@ -169,9 +167,18 @@ export default defineConfig(
         parser: tseslint.parser,
       },
     },
+  },
 
-    rules: {
-      // Здесь можно добавлять именно ваши Svelte-правила.
+  /*
+   * Svelte 5 runes in .svelte.ts / .svelte.js files
+   */
+  {
+    files: ['**/*.svelte.ts', '**/*.svelte.js'],
+
+    languageOptions: {
+      parserOptions: {
+        parser: tseslint.parser,
+      },
     },
   },
 

@@ -45,7 +45,7 @@ export const removePurchaseGroups = (purchaseId: number): void => {
   localStorage.setItem(LS_KEY, JSON.stringify(newGroups));
 };
 
-export const updateGroup = (group: Omit<Group, 'purchaseId'>): void => {
+export const updateGroup = (group: Group): void => {
   const groups = getGroups();
   const newGroups = groups.map((g) =>
     g.id === group.id ? { ...group, purchaseId: g.purchaseId } : g
