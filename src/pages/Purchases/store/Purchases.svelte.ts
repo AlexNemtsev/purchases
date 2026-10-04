@@ -1,5 +1,3 @@
-import { SvelteMap } from 'svelte/reactivity';
-
 import {
   addPurchase,
   getPurchases,
@@ -44,7 +42,9 @@ export class Purchases {
       sum.discountPromille += Math.round((sum.discountTotal * 1000) / sum.receiptTotal);
 
       return acc;
-    }, new SvelteMap<number, ReceiptsSum>());
+      // Map используется только для вычислений
+      // eslint-disable-next-line svelte/prefer-svelte-reactivity
+    }, new Map<number, ReceiptsSum>());
 
     return purchases.map((purchase) => {
       const sum = receiptsSums.get(purchase.id)!;

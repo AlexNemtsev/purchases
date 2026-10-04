@@ -4,8 +4,7 @@ export interface Operation {
   type: 'expense' | 'refund';
   amountCents: number;
   comment?: string;
-  discountFromPurchaseId?: number;
-  discountFromReceiptId?: number;
+  discountSource: { type: 'purchase' } | { type: 'receipt'; receiptId: number };
 }
 
 const LS_KEY = 'operations';
