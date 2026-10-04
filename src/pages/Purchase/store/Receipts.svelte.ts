@@ -12,10 +12,6 @@ export class Receipts {
   private _totalDiscountCents: number;
   private _totalDiscountPromille: number;
 
-  private updateReceipts = () => {
-    this._receipts = getPurchaseReceipts(this.purchaseId);
-  };
-
   constructor(private readonly purchaseId: number) {
     this._receipts = $state(getPurchaseReceipts(purchaseId));
 
@@ -49,17 +45,17 @@ export class Receipts {
   }
 
   addReceipt = (receipt: Omit<Receipt, 'id'>) => {
-    addReceipt(receipt);
-    this.updateReceipts();
+    const { id } = addReceipt(receipt);
+    this._receipts.push({ ...receipt, id });
   };
 
-  removeReceipt = (receiptId: number) => {
-    removeReceipt(receiptId);
-    this.updateReceipts();
+  removeReceipt = (id: number) => {
+    removeReceipt(id);
+    this._receipts = this._receipts.filter((receipt) => receipt.id !== id);
   };
 
   updateReceipt = (receipt: Receipt) => {
     updateReceipt(receipt);
-    this.updateReceipts();
+    this._receipts = this._receipts.map((r) => (r.id === receipt.id ? receipt : r));
   };
 }

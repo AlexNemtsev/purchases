@@ -3,7 +3,7 @@ import {
   removePurchase,
   updatePurchase,
   type Purchase,
-} from '@/shared/lib/dbController/purchase';
+} from '@/shared/lib/dbController/purchases';
 
 export class PurchaseStore {
   private _purchase: Purchase | undefined;

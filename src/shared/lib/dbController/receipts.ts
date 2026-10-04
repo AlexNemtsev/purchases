@@ -22,13 +22,16 @@ export const getPurchaseReceipts = (purchaseId: number): Receipt[] => {
   return receipts.filter((receipt) => receipt.purchaseId === purchaseId);
 };
 
-export const addReceipt = (receipt: Omit<Receipt, 'id'>): void => {
+export const addReceipt = (receipt: Omit<Receipt, 'id'>) => {
   const receipts = getReceipts();
   const lastId = receipts.length ? receipts[receipts.length - 1].id : 0;
+  const id = lastId + 1;
 
-  receipts.push({ ...receipt, id: lastId + 1 });
+  receipts.push({ ...receipt, id });
 
   localStorage.setItem(LS_KEY, JSON.stringify(receipts));
+
+  return { id };
 };
 
 export const removeReceipt = (id: number): void => {
@@ -47,9 +50,7 @@ export const removePurchaseReceipts = (purchaseId: number): void => {
 
 export const updateReceipt = (receipt: Receipt): void => {
   const receipts = getReceipts();
-  const newReceipts = receipts.map((r) =>
-    r.id === receipt.id ? { ...receipt, purchaseId: r.purchaseId } : r
-  );
+  const newReceipts = receipts.map((r) => (r.id === receipt.id ? receipt : r));
 
   localStorage.setItem(LS_KEY, JSON.stringify(newReceipts));
 };

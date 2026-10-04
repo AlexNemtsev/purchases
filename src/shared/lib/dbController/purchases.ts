@@ -1,4 +1,4 @@
-import { removePurchaseGroups } from './groups';
+import { removePurchaseCategories } from './categories';
 import { removePurchaseReceipts } from './receipts';
 
 export interface Purchase {
@@ -21,13 +21,16 @@ export const getPurchase = (id: number): Purchase | undefined => {
   return purchases.find((purchase) => purchase.id === id);
 };
 
-export const addPurchase = (purchase: Omit<Purchase, 'id'>): void => {
+export const addPurchase = (purchase: Omit<Purchase, 'id'>) => {
   const purchases = getPurchases();
   const lastId = purchases.length ? purchases[purchases.length - 1].id : 0;
+  const id = lastId + 1;
 
-  purchases.push({ ...purchase, id: lastId + 1 });
+  purchases.push({ ...purchase, id });
 
   localStorage.setItem(LS_KEY, JSON.stringify(purchases));
+
+  return { id };
 };
 
 export const removePurchase = (id: number): void => {
@@ -35,7 +38,7 @@ export const removePurchase = (id: number): void => {
   const newPurchases = purchases.filter((purchase) => purchase.id !== id);
 
   localStorage.setItem(LS_KEY, JSON.stringify(newPurchases));
-  removePurchaseGroups(id);
+  removePurchaseCategories(id);
   removePurchaseReceipts(id);
 };
 

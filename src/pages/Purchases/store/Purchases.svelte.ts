@@ -1,9 +1,11 @@
+import { SvelteMap } from 'svelte/reactivity';
+
 import {
   addPurchase,
   getPurchases,
   type Purchase,
   removePurchase,
-} from '@/shared/lib/dbController/purchase';
+} from '@/shared/lib/dbController/purchases';
 import { getReceipts } from '@/shared/lib/dbController/receipts';
 
 interface ReceiptsSum {
@@ -20,7 +22,7 @@ export class Purchases {
   private _purchases: CalculatedPurchase[];
 
   constructor() {
-    this._purchases = $state.raw(this.getPurchasesWithReceipts());
+    this._purchases = $state(this.getPurchasesWithReceipts());
   }
 
   get purchases() {
@@ -42,11 +44,7 @@ export class Purchases {
       sum.discountPromille += Math.round((sum.discountTotal * 1000) / sum.receiptTotal);
 
       return acc;
-      // используется $state.raw
-      // eslint-disable-next-line svelte/prefer-svelte-reactivity
-    }, new Map<number, ReceiptsSum>());
-
-    purchases.sort((a, b) => b.id - a.id);
+    }, new SvelteMap<number, ReceiptsSum>());
 
     return purchases.map((purchase) => {
       const sum = receiptsSums.get(purchase.id)!;
@@ -57,11 +55,16 @@ export class Purchases {
 
   removePurchase = (id: number) => {
     removePurchase(id);
-    this._purchases = this.getPurchasesWithReceipts();
+    this._purchases = this._purchases.filter((purchase) => purchase.id !== id);
   };
 
   addPurchase = (purchase: Omit<Purchase, 'id'>) => {
-    addPurchase(purchase);
-    this._purchases = this.getPurchasesWithReceipts();
+    const { id } = addPurchase(purchase);
+
+    this._purchases.push({
+      ...purchase,
+      id,
+      receiptsSum: { receiptTotal: 0, discountTotal: 0, discountPromille: 0 },
+    });
   };
 }
