@@ -15,6 +15,12 @@ const getCategories = (): Category[] => {
   return categories ? JSON.parse(categories) : [];
 };
 
+export const getCategory = (id: number): Category | undefined => {
+  const categories = getCategories();
+
+  return categories.find((cat) => cat.id === id);
+};
+
 export const getPurchaseCategories = (purchaseId: number): Category[] => {
   const categories = getCategories();
 
