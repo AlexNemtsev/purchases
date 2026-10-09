@@ -1,23 +1,13 @@
-export interface Expense {
+export interface Operation {
   id: number;
+  receiptId: number;
   categoryId: number;
-  type: 'expense';
-  amountCents: number;
-  comment?: string;
-  discountSource: { type: 'purchase' } | { type: 'receipt'; receiptId: number };
-}
-
-export interface Refund {
-  id: number;
-  categoryId: number;
-  type: 'refund';
+  type: 'expense' | 'refund';
   amountCents: number;
   comment?: string;
 }
 
-export type Operation = Expense | Refund;
-
-export type NewOperation = Omit<Expense, 'id'> | Omit<Refund, 'id'>;
+export type NewOperation = Omit<Operation, 'id'>;
 
 const LS_KEY = 'operations';
 
@@ -27,8 +17,8 @@ const getOperations = (): Operation[] => {
   return operations ? JSON.parse(operations) : [];
 };
 
-export const getCategoryOperations = (categoryId: number): Operation[] => {
-  return getOperations().filter((operation) => operation.categoryId === categoryId);
+export const getReceiptOperations = (receiptId: number): Operation[] => {
+  return getOperations().filter((operation) => operation.receiptId === receiptId);
 };
 
 export const addOperation = (operation: NewOperation) => {
@@ -50,9 +40,9 @@ export const removeOperation = (id: number): void => {
   localStorage.setItem(LS_KEY, JSON.stringify(newOperations));
 };
 
-export const removeCategoryOperations = (categoryId: number): void => {
+export const removeReceiptOperations = (receiptId: number): void => {
   const operations = getOperations();
-  const newOperations = operations.filter((operation) => operation.categoryId !== categoryId);
+  const newOperations = operations.filter((operation) => operation.receiptId !== receiptId);
 
   localStorage.setItem(LS_KEY, JSON.stringify(newOperations));
 };

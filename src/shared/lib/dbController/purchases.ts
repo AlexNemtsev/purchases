@@ -1,4 +1,3 @@
-import { removePurchaseCategories } from './categories';
 import { removePurchaseReceipts } from './receipts';
 
 export interface Purchase {
@@ -38,7 +37,6 @@ export const removePurchase = (id: number): void => {
   const newPurchases = purchases.filter((purchase) => purchase.id !== id);
 
   localStorage.setItem(LS_KEY, JSON.stringify(newPurchases));
-  removePurchaseCategories(id);
   removePurchaseReceipts(id);
 };
 

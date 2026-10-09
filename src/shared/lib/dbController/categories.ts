@@ -1,4 +1,6 @@
-import { removeCategoryOperations } from './operations';
+import { removeReceiptOperations } from './operations';
+
+// TODO: нужно пересмотерть логику категорий
 
 export interface Category {
   id: number;
@@ -44,7 +46,7 @@ export const removeCategory = (id: number): void => {
   const newCategories = categories.filter((cat) => cat.id !== id);
 
   localStorage.setItem(LS_KEY, JSON.stringify(newCategories));
-  removeCategoryOperations(id);
+  removeReceiptOperations(id);
 };
 
 export const removePurchaseCategories = (purchaseId: number): void => {

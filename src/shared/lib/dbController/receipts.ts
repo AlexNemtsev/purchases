@@ -1,3 +1,5 @@
+import { removeReceiptOperations } from './operations';
+
 export interface Receipt {
   id: number;
   purchaseId: number;
@@ -39,6 +41,7 @@ export const removeReceipt = (id: number): void => {
   const newReceipts = receipts.filter((receipt) => receipt.id !== id);
 
   localStorage.setItem(LS_KEY, JSON.stringify(newReceipts));
+  removeReceiptOperations(id);
 };
 
 export const removePurchaseReceipts = (purchaseId: number): void => {
