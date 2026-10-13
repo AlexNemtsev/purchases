@@ -14,7 +14,7 @@
   let { class: className }: Props = $props();
 </script>
 
-<Drawer.Root direction="bottom">
+<Drawer.Root direction="right">
   <Drawer.Trigger class={className}>
     <MenuIcon />
   </Drawer.Trigger>
