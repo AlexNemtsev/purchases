@@ -12,5 +12,5 @@ export default {
   arrowParens: 'always',
   overrides: [{ files: '*.svelte', options: { parser: 'svelte' } }],
   plugins: [prettierPluginSvelte, prettierPluginTailwind],
-  tailwindStylesheet: './src/app.css',
+  tailwindStylesheet: './src/routes/app.css',
 };

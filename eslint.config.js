@@ -16,6 +16,7 @@ export default defineConfig(
   ...tseslint.configs.recommended,
   ...svelte.configs.recommended,
   prettier,
+  svelte.configs.prettier,
 
   {
     files: ['**/*.{js,ts,svelte}'],
@@ -193,19 +194,18 @@ export default defineConfig(
       'import-x/no-extraneous-dependencies': 'off',
     },
   },
-  // В main.ts для svelte требуется экспорт по-умолчанию
-  {
-    files: ['./src/main.ts'],
-    rules: {
-      'import-x/no-default-export': 'off',
-    },
-  },
   {
     // файл содержит виртуальный модуль из vite-pwa
-    files: ['./src/app/ui/ReloadPrompt.svelte'],
+    files: ['src/routes/ReloadPrompt.svelte', 'src/routes/+layout.svelte'],
     rules: {
       'import-x/no-unresolved': 'off',
       'no-console': 'off',
+    },
+  },
+  {
+    files: ['src/routes/+layout.svelte'],
+    rules: {
+      'svelte/no-at-html-tags': 'off',
     },
   }
 );

@@ -12,10 +12,11 @@
 
     <meta name="theme-color" content="#f4f2f3" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#22292b" media="(prefers-color-scheme: dark)" />
+
+    %sveltekit.head%
   </head>
 
   <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
+    <div style="display: contents">%sveltekit.body%</div>
   </body>
 </html>

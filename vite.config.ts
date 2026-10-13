@@ -1,16 +1,31 @@
 import path from 'node:path';
 
-import { svelte } from '@sveltejs/vite-plugin-svelte';
+import { SvelteKitPWA } from '@katama-labs/vite-pwa-sveltekit';
+import adapter from '@sveltejs/adapter-static';
+import { sveltekit } from '@sveltejs/kit/vite';
 import tailwindcss from '@tailwindcss/vite';
+// TODO: вернуть после обновления до версии 2.0.0
+// import { SvelteKitPWA } from '@vite-pwa/sveltekit';
 import { defineConfig } from 'vite';
-import { VitePWA } from 'vite-plugin-pwa';
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
     tailwindcss(),
-    svelte(),
-    VitePWA({
+    sveltekit({
+      compilerOptions: {
+        // Force runes mode for the project, except for libraries. Can be removed in svelte 6.
+        runes: ({ filename }) =>
+          filename.split(/[/\\]/).includes('node_modules') ? undefined : true,
+      },
+      adapter: adapter({
+        fallback: '200.html',
+      }),
+      serviceWorker: {
+        register: false,
+      },
+    }),
+    SvelteKitPWA({
       registerType: 'prompt',
       manifest: {
         lang: 'ru',
