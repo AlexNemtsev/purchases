@@ -1,8 +1,11 @@
 <script lang="ts">
-  import { ModeWatcher } from 'mode-watcher';
   // @ts-expect-error Виртуальный плагин
   import { pwaInfo } from 'virtual:pwa-info';
+
+  import { ModeWatcher } from 'mode-watcher';
+
   import './app.css';
+  import NavMenu from './ui/NavMenu.svelte';
 
   const webManifestLink = pwaInfo ? pwaInfo.webManifest.linkTag : '';
 
@@ -14,11 +17,15 @@
 </svelte:head>
 
 <ModeWatcher />
-<div class="h-dvh w-dvw bg-muted p-6">
-  <div class="flex flex-col justify-between gap-2">
+<main
+  class="flex h-dvh w-dvw flex-col items-center justify-between p-6 pb-[env(safe-area-inset-bottom)]"
+>
+  <div class="flex w-full flex-col justify-between gap-2">
     {@render children()}
   </div>
-</div>
+
+  <NavMenu />
+</main>
 
 {#await import('./ReloadPrompt.svelte') then { default: ReloadPrompt }}
   <ReloadPrompt />

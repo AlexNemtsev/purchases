@@ -1,0 +1,17 @@
+[
+  {
+    "label": "dev",
+    "command": "pnpm dev",
+    "tags": ["package-script"]
+  },
+  {
+    "label": "check",
+    "command": "pnpm check",
+    "tags": ["package-script"]
+  },
+  {
+    "label": "build",
+    "command": "pnpm build",
+    "tags": ["package-script"]
+  }
+]

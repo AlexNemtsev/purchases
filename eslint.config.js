@@ -37,6 +37,18 @@ export default defineConfig(
       'import-x/resolver': {
         typescript: {},
       },
+      'import-x/core-modules': [
+        '$app/paths',
+        '$app/state',
+        '$app/environment',
+        '$app/navigation',
+        '$app/stores',
+        '$app/forms',
+        '$env/dynamic/private',
+        '$env/dynamic/public',
+        'virtual:pwa-info',
+        'virtual:pwa-register/svelte',
+      ],
     },
 
     rules: {
@@ -55,15 +67,19 @@ export default defineConfig(
         },
       ],
 
-      /*
-       * Imports
-       */
       'import-x/extensions': [
         'error',
         'ignorePackages',
         {
-          js: 'never',
-          ts: 'never',
+          pattern: {
+            js: 'never',
+            ts: 'never',
+          },
+          pathGroupOverrides: [
+            { pattern: '$app/**', action: 'ignore' },
+            { pattern: '$app/*', action: 'ignore' },
+            { pattern: '$env/**', action: 'ignore' },
+          ],
         },
       ],
 
@@ -196,9 +212,8 @@ export default defineConfig(
   },
   {
     // файл содержит виртуальный модуль из vite-pwa
-    files: ['src/routes/ReloadPrompt.svelte', 'src/routes/+layout.svelte'],
+    files: ['src/routes/ReloadPrompt.svelte'],
     rules: {
-      'import-x/no-unresolved': 'off',
       'no-console': 'off',
     },
   },

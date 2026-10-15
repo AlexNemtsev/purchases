@@ -8,8 +8,10 @@
   let { children }: Props = $props();
 </script>
 
-<h1 class="col-start-2 text-3xl">
-  {#if children}
-    {@render children()}
-  {/if}
-</h1>
+<div class="flex flex-row justify-center">
+  <h1 class="text-3xl">
+    {#if children}
+      {@render children()}
+    {/if}
+  </h1>
+</div>
