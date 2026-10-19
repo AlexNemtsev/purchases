@@ -1,37 +1,21 @@
 import {
+  getCategories,
   removeCategory,
   type Category,
-  getCategory,
   updateCategory,
-  getPurchaseCategories,
+  addCategory,
 } from '@/shared/lib/dbController/categories';
-
-export class CategoryStore {
-  private _category: Category | undefined;
-
-  constructor(categoryId: number) {
-    this._category = $state(getCategory(categoryId));
-  }
-
-  get category() {
-    return this._category;
-  }
-
-  updateCategory = (category: Category) => {
-    updateCategory(category);
-    this._category = category;
-  };
-
-  removeCategory = (id: number) => {
-    removeCategory(id);
-  };
-}
 
 export class CategoriesStore {
   private _categories: Category[];
 
-  constructor(purchaseId: number) {
-    this._categories = $state(getPurchaseCategories(purchaseId));
+  private sortCategories = () => {
+    this._categories = this._categories.toSorted((a, b) => a.title.localeCompare(b.title));
+  };
+
+  constructor() {
+    this._categories = $state(getCategories());
+    this.sortCategories();
   }
 
   get categories() {
@@ -41,5 +25,17 @@ export class CategoriesStore {
   removeCategory = (id: number) => {
     removeCategory(id);
     this._categories = this._categories.filter((category) => category.id !== id);
+  };
+
+  addCategory = (category: Omit<Category, 'id'>) => {
+    const { id } = addCategory(category);
+    this._categories.push({ ...category, id });
+    this.sortCategories();
+  };
+
+  updateCategory = (category: Category) => {
+    updateCategory(category);
+    this._categories = getCategories();
+    this.sortCategories();
   };
 }

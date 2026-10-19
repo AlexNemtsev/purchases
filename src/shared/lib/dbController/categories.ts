@@ -4,29 +4,16 @@ import { removeReceiptOperations } from './operations';
 
 export interface Category {
   id: number;
-  purchaseId: number;
   title: string;
   comment?: string;
 }
 
-const LS_KEY = 'category';
+const LS_KEY = 'categories';
 
-const getCategories = (): Category[] => {
+export const getCategories = (): Category[] => {
   const categories = localStorage.getItem(LS_KEY);
 
   return categories ? JSON.parse(categories) : [];
-};
-
-export const getCategory = (id: number): Category | undefined => {
-  const categories = getCategories();
-
-  return categories.find((cat) => cat.id === id);
-};
-
-export const getPurchaseCategories = (purchaseId: number): Category[] => {
-  const categories = getCategories();
-
-  return categories.filter((cat) => cat.purchaseId === purchaseId);
 };
 
 export const addCategory = (category: Omit<Category, 'id'>) => {
@@ -47,13 +34,6 @@ export const removeCategory = (id: number): void => {
 
   localStorage.setItem(LS_KEY, JSON.stringify(newCategories));
   removeReceiptOperations(id);
-};
-
-export const removePurchaseCategories = (purchaseId: number): void => {
-  const categories = getCategories();
-  const newCategories = categories.filter((cat) => cat.purchaseId !== purchaseId);
-
-  localStorage.setItem(LS_KEY, JSON.stringify(newCategories));
 };
 
 export const updateCategory = (category: Category): void => {

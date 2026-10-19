@@ -18,7 +18,7 @@
   }
 
   const menuItems: MenuItem[] = [
-    { label: 'Закупки', href: '/', icon: ReceiptRussianRuble },
+    { label: 'Закупки', href: '/purchases', icon: ReceiptRussianRuble },
     { label: 'Категории', href: '/categories', icon: ListIcon },
     { label: 'Настройки', href: '/settings', icon: GearIcon },
   ];
@@ -27,7 +27,7 @@
 <NavigationMenu.Root class="flex-0 justify-center border-t md:hidden">
   <NavigationMenu.List>
     {#each menuItems as item (item.href)}
-      {const isActive = page.url.pathname === item.href}
+      {const isActive = $derived(page.url.pathname === item.href)}
       <NavigationMenu.Item aria-current={isActive ? 'page' : undefined}>
         <NavigationMenu.Link
           class={[

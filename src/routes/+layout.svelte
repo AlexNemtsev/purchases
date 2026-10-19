@@ -20,7 +20,7 @@
 <main
   class="flex h-dvh w-dvw flex-col items-center justify-between p-6 pb-[env(safe-area-inset-bottom)]"
 >
-  <div class="flex w-full flex-col justify-between gap-2">
+  <div class="flex h-full min-h-0 w-full flex-col gap-2">
     {@render children()}
   </div>
 

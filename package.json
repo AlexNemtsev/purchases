@@ -58,7 +58,7 @@
     "workbox-window": "^7.4.1"
   },
   "dependencies": {
-    "@lucide/svelte": "^1.53.0",
+    "@lucide/svelte": "^1.59.0",
     "mode-watcher": "^1.1.0"
   }
 }
