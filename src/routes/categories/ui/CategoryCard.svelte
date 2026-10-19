@@ -19,7 +19,9 @@
     <Card.Root>
       <Card.Header>
         <Card.Title class="text-lg">{title}</Card.Title>
-        {#if comment}<Card.Description>{comment}</Card.Description>{/if}
+        {#if comment}
+          <Card.Description>{comment}</Card.Description>
+        {/if}
       </Card.Header>
     </Card.Root>
   </ContextMenu.Trigger>

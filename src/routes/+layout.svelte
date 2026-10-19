@@ -5,7 +5,6 @@
   import { ModeWatcher } from 'mode-watcher';
 
   import './app.css';
-  import NavMenu from './ui/NavMenu.svelte';
 
   const webManifestLink = pwaInfo ? pwaInfo.webManifest.linkTag : '';
 
@@ -18,13 +17,10 @@
 
 <ModeWatcher />
 <main
-  class="flex h-dvh w-dvw flex-col items-center justify-between p-6 pb-[env(safe-area-inset-bottom)]"
+  class="flex h-dvh w-dvw flex-col items-center
+  justify-between p-6 pb-[env(safe-area-inset-bottom)]"
 >
-  <div class="flex h-full min-h-0 w-full flex-col gap-2">
-    {@render children()}
-  </div>
-
-  <NavMenu />
+  {@render children()}
 </main>
 
 {#await import('./ReloadPrompt.svelte') then { default: ReloadPrompt }}

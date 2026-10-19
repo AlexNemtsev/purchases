@@ -1,5 +1,6 @@
 <script>
   import PageHeader from '@/shared/ui/PageHeader.svelte';
+  import PageLayout from '@/shared/ui/PageLayout.svelte';
 
   import ThemeSwitcher from './ThemeSwitcher.svelte';
 </script>
@@ -10,4 +11,6 @@
 
 <PageHeader>Настройки</PageHeader>
 
-<ThemeSwitcher />
+<PageLayout showNavigation>
+  <ThemeSwitcher />
+</PageLayout>
