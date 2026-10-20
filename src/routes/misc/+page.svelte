@@ -3,14 +3,16 @@
   import PageLayout from '@/shared/ui/PageLayout.svelte';
 
   import ThemeSwitcher from './ThemeSwitcher.svelte';
+  import CashbackCalculator from './ui/CashbackCalculator.svelte';
 </script>
 
 <svelte:head>
-  <title>Настройки</title>
+  <title>Разное</title>
 </svelte:head>
 
-<PageHeader>Настройки</PageHeader>
+<PageHeader>Разное</PageHeader>
 
 <PageLayout showNavigation>
   <ThemeSwitcher />
+  <CashbackCalculator />
 </PageLayout>

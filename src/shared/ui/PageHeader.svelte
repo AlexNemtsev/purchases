@@ -10,8 +10,6 @@
 
 <div class="flex flex-row justify-center">
   <h1 class="text-3xl">
-    {#if children}
-      {@render children()}
-    {/if}
+    {@render children?.()}
   </h1>
 </div>

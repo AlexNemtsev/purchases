@@ -20,7 +20,7 @@
   const menuItems: MenuItem[] = [
     { label: 'Закупки', href: '/purchases', icon: ReceiptRussianRuble },
     { label: 'Категории', href: '/categories', icon: ListIcon },
-    { label: 'Настройки', href: '/settings', icon: GearIcon },
+    { label: 'Разное', href: '/misc', icon: GearIcon },
   ];
 </script>
 
