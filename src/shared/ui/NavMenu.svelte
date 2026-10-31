@@ -1,5 +1,4 @@
 <script lang="ts">
-  import type { RouteIdWithSearchOrHash } from '$app/types';
   import type { LucideProps } from '@lucide/svelte';
   import GearIcon from '@lucide/svelte/icons/cog';
   import ListIcon from '@lucide/svelte/icons/list';
@@ -13,7 +12,7 @@
 
   interface MenuItem {
     label: string;
-    href: RouteIdWithSearchOrHash;
+    href: '/' | '/categories' | '/misc' | '/purchases';
     icon: Component<LucideProps, object, ''>;
   }
 

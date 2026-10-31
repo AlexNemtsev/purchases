@@ -18,7 +18,7 @@
 <div class="flex h-full min-h-0 w-full flex-col gap-2">
   <div class="flex min-h-0 flex-1 flex-col justify-between gap-2 pb-2">
     <ScrollArea class="min-h-0 flex-1">
-      <div class="flex h-max flex-col gap-2 p-1">
+      <div class="flex h-max flex-col gap-2 p-1 pt-2">
         {@render children?.()}
       </div>
     </ScrollArea>
