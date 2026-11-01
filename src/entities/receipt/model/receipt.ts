@@ -5,11 +5,10 @@ import type {
   ReceiptSummary,
   ReceiptValidationError,
 } from './types';
-import { MAX_AMOUNT_KOPECKS, MAX_COMMENT_LENGTH } from '../../../shared/config/limits';
+import { MAX_AMOUNT_KOPECKS, MAX_COMMENT_LENGTH } from '../../../shared/config';
 import { calculateDiscountValue, validateDiscount } from '../../../shared/lib/discount';
 import { roundDiv } from '../../../shared/lib/money';
-import { calculateOperationNet } from '../../operation/@x/purchase';
-import { removeByReceipts } from '../../operation/@x/receipt';
+import { calculateOperationNet, removeByReceipts } from '../../operation/@x/receipt';
 import type { Operation } from '../../operation/@x/receipt';
 
 const isAmountDiscount = (part: ReceiptDiscountPart) => part.mode === 'amount';

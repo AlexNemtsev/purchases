@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { formatMoney, formatPermille, parseMoney, parsePermille, roundDiv } from './index';
-import { MAX_AMOUNT_KOPECKS, MAX_PERMILLE } from '../../config/limits';
+import { MAX_AMOUNT_KOPECKS, MAX_PERMILLE } from '../../config';
 
 describe('roundDiv', () => {
   it('rounds half away from zero', () => {

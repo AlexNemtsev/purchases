@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { MAX_PERMILLE } from '../config/limits';
+  import { MAX_PERMILLE } from '../config';
 
   interface Props {
     id: string;

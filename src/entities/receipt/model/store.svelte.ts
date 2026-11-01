@@ -6,11 +6,7 @@ import {
   validateReceipt,
 } from './receipt';
 import type { Receipt } from './types';
-import {
-  DocumentStoreError,
-  type DocumentStore,
-  type StorageDocument,
-} from '../../../shared/api/document-store';
+import { DocumentStoreError, type DocumentStore, type StorageDocument } from '../../../shared/api';
 import type { Operation } from '../../operation/@x/receipt';
 
 export const createReceiptStore = <

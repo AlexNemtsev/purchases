@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { calculateDiscountValue, validateDiscount } from './index';
-import { MAX_AMOUNT_KOPECKS, MAX_PERMILLE } from '../../config/limits';
+import { MAX_AMOUNT_KOPECKS, MAX_PERMILLE } from '../../config';
 
 describe('calculateDiscountValue', () => {
   it('returns fixed discounts unchanged', () => {

@@ -7,11 +7,7 @@ import {
   validatePurchase,
 } from './purchase';
 import type { Purchase } from './types';
-import {
-  DocumentStoreError,
-  type DocumentStore,
-  type StorageDocument,
-} from '../../../shared/api/document-store';
+import { DocumentStoreError, type DocumentStore, type StorageDocument } from '../../../shared/api';
 import type { Operation } from '../../operation/@x/purchase';
 import type { Receipt } from '../../receipt/@x/purchase';
 

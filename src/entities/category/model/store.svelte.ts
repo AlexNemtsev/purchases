@@ -2,11 +2,7 @@ import { SvelteDate } from 'svelte/reactivity';
 
 import { sortCategories, validateCategory, validateCategoryTitle } from './category';
 import type { Category } from './types';
-import {
-  DocumentStoreError,
-  type DocumentStore,
-  type StorageDocument,
-} from '../../../shared/api/document-store';
+import { DocumentStoreError, type DocumentStore, type StorageDocument } from '../../../shared/api';
 
 export const createCategoryStore = <
   T extends StorageDocument<{ id: string }, { id: string }, { id: string }, Category>,

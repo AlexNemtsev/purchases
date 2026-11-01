@@ -1,0 +1,12 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "buildCommand": "pnpm build",
+  "outputDirectory": "build",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/200.html"
+    }
+  ]
+}

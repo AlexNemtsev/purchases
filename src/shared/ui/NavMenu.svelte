@@ -21,6 +21,8 @@
     { label: 'Категории', href: '/categories', icon: ListIcon },
     { label: 'Разное', href: '/misc', icon: GearIcon },
   ];
+  const purchaseRoute = resolve('/purchases/[purchaseId]', { purchaseId: 'purchase-id' });
+  const purchaseRoutePrefix = purchaseRoute.slice(0, -'purchase-id'.length);
 </script>
 
 <NavigationMenu.Root class="flex-0 justify-center border-t md:hidden">
@@ -28,8 +30,8 @@
     {#each menuItems as item (item.href)}
       {const isActive = $derived(
         item.href === '/'
-          ? page.url.pathname === '/' || page.url.pathname.startsWith('/purchases/')
-          : page.url.pathname === item.href
+          ? page.url.pathname === resolve('/') || page.url.pathname.startsWith(purchaseRoutePrefix)
+          : page.url.pathname === resolve(item.href)
       )}
       <NavigationMenu.Item aria-current={isActive ? 'page' : undefined}>
         <NavigationMenu.Link

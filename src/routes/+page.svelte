@@ -1,13 +1,13 @@
 <script lang="ts">
-  import { getAppContext } from '@/app/model/context.svelte';
+  import { getAppContext } from '@/app';
   import { calculatePurchaseSummary } from '@/entities/purchase';
   import type { Purchase } from '@/entities/purchase';
-  import PurchaseEditor from '@/features/edit-purchase/ui/PurchaseEditor.svelte';
+  import { PurchaseEditor } from '@/features/edit-purchase';
   import ConfirmDialog from '@/shared/ui/ConfirmDialog.svelte';
   import EmptyState from '@/shared/ui/EmptyState.svelte';
   import PageHeader from '@/shared/ui/PageHeader.svelte';
   import PageLayout from '@/shared/ui/PageLayout.svelte';
-  import PurchaseList from '@/widgets/purchase-list/PurchaseList.svelte';
+  import { PurchaseList } from '@/widgets/purchase-list';
 
   import { goto } from '$app/navigation';
   import { resolve } from '$app/paths';

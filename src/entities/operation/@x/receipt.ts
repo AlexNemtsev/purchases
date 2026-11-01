@@ -1,3 +1,3 @@
-export { removeByReceipts } from '../model/operation';
+export { calculateOperationNet, removeByReceipts } from '../model/operation';
 
-export type { Operation } from '../model/types';
+export type { Operation, OperationRate } from '../model/types';

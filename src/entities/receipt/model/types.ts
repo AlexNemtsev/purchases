@@ -1,6 +1,5 @@
 import type { AmountDiscount, PercentDiscount } from '../../../shared/lib/discount';
-import type { OperationRate } from '../../operation/@x/purchase';
-import type { Operation } from '../../operation/@x/receipt';
+import type { Operation, OperationRate } from '../../operation/@x/receipt';
 
 export type PercentBase = 'original' | 'afterPrevious';
 

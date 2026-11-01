@@ -8,7 +8,7 @@ import { createPurchaseStore } from '../../entities/purchase';
 import type { Purchase } from '../../entities/purchase';
 import { createReceiptStore } from '../../entities/receipt';
 import type { Receipt } from '../../entities/receipt';
-import type { DocumentStore, StorageDocument } from '../../shared/api/document-store';
+import type { DocumentStore, StorageDocument } from '../../shared/api';
 
 export type AppDocument = StorageDocument<Purchase, Receipt, Operation, Category>;
 

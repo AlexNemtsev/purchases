@@ -9,8 +9,8 @@
   import type { Category } from '../../../entities/category';
   import type { Operation, OperationRate } from '../../../entities/operation';
   import { calculateOperationNet } from '../../../entities/operation';
-  import { createId } from '../../../shared/api/document-store';
-  import { MAX_COMMENT_LENGTH } from '../../../shared/config/limits';
+  import { createId } from '../../../shared/api';
+  import { MAX_COMMENT_LENGTH } from '../../../shared/config';
   import { formatMoney, parseMoney } from '../../../shared/lib/money';
   import AmountOrPercentInput from '../../../shared/ui/AmountOrPercentInput.svelte';
   import EmptyState from '../../../shared/ui/EmptyState.svelte';

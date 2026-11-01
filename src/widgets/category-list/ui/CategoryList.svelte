@@ -1,9 +1,8 @@
 <script lang="ts">
   import { Button } from '$lib/components/ui/button';
-
-  import { CategoryBadge } from '../../entities/category';
-  import type { Category } from '../../entities/category';
-  import EmptyState from '../../shared/ui/EmptyState.svelte';
+  import { CategoryBadge } from '@/entities/category';
+  import type { Category } from '@/entities/category';
+  import EmptyState from '@/shared/ui/EmptyState.svelte';
 
   interface Props {
     categories: readonly Category[];

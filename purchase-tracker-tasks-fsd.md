@@ -379,11 +379,31 @@ src/
 - Согласовать `base`, `manifest.start_url/scope`, `scope` SW и
   `navigateFallback` с `fallback` адаптера; проверить офлайн и deep link.
 
+Готово: `BASE_PATH=/demo pnpm build` собирает приложение с согласованными
+путями, `200.html` fallback и Workbox `navigateFallback`; в precache входят
+46 ресурсов, включая fallback и шрифты. На статическом хосте с префиксом
+`/demo/` проверены офлайн-переход по deep link и загрузка app shell.
+Для Vercel добавлен `vercel.json`: выбран статический режим `Other`, команда
+сборки — `pnpm build`, каталог публикации — `build`, deep links переписываются
+на `200.html` — тот же fallback, что у adapter-static и Workbox. На Vercel
+приложение размещается в корне сайта (`BASE_PATH` пустой по умолчанию);
+сборка с `/demo` проверена отдельно на хосте с поддержкой подкаталога.
+Деплой в аккаунт Vercel в рамках этой проверки не выполнялся.
+
 ### T4.2 Сквозная проверка на телефоне (M)
 Зависит от: T3.9, T4.1.
 - Сценарий: категория → закупка → два чека (одна и две скидки) →
   операции (индивидуальная скидка, возврат) → оба вида закупки → выгрузка
   JSON → перезагрузка → удаление. Можно автоматизировать на Playwright.
+
+Готово: на мобильном viewport пройден сценарий с двумя чеками, операциями,
+скидкой и возвратом. В обоих представлениях совпали операции; итог —
+454,50 ₽, расходы — 550 ₽, скидки — 95,50 ₽, возвраты — 50 ₽. Проверены
+JSON `purchase-tracker-2026-11-01.json` с ключами
+`schemaVersion`, `purchases`, `receipts`, `operations`, `categories`,
+`exportedAt`, сохранность после перезагрузки и каскадное удаление без
+удаления категорий. Архивирование, отображение и восстановление категории
+также проверены вручную.
 
 ### T4.3 Сверка с ТЗ и архитектурой (S)
 Зависит от: все.
@@ -393,23 +413,41 @@ src/
   сущностями.
 - Пройти §18 ТЗ (допущения).
 
+Готово: добавлены `pnpm check:fsd` и конфигурация Steiger; `pnpm check:fsd`
+проверяет импорты вверх и между слайсами в слоях app/widgets/features/
+entities/shared и сообщает `No problems found`. `src/routes/**` — адаптер
+SvelteKit для слоя страниц, который Steiger не распознаёт: маршруты
+проверены отдельно, они используют публичные `index.ts` фич и виджетов и не
+импортируют внутренние сегменты других слайсов. Для этих фич и виджетов
+отключена только проверка «неиспользуемого слайса», дающая ложные
+срабатывания из-за маршрутов.
+
+Перенесённый в `app` интеграционный тест покрывает совместную работу сторов;
+старые неиспользуемые сторы и контроллеры удалены. `pnpm test` — 62 теста,
+`pnpm check` — без ошибок, ESLint — без ошибок и циклических импортов
+(осталось одно предупреждение `max-len` в `routes/misc/ThemeSwitcher.svelte`).
+Допущения §18 проверены тестами и ручным проходом UI: формы модальные,
+лимиты и валидация соблюдаются, чек без операций не даёт предупреждения,
+подтверждение удаления показывает каскадное количество, архивирование не
+требует подтверждения.
+
 ---
 
 ## Покрытие тест-кейсов ТЗ §17
 
-| Кейсы | Задача (слайс) |
+| Кейсы | Файлы тестов / проверка |
 |---|---|
-| 1–8 | T2.2 (`entities/receipt`), T3.5 |
-| 9–17 | T2.1 (`entities/operation`), T3.6 |
-| 18, 19, 25, 26, 27 | T1.1 (`shared/lib/money`) |
-| 20–22 | T2.2 (`entities/receipt`) |
-| 23 | T2.4 (`entities/purchase`) |
-| 24 | T2.3 (`entities/category`) |
-| 28 | T1.2 (`shared/lib/date`), T3.4 |
-| 29 | T2.4, T3.4 |
-| 30, 31, 32 | T2.3, T3.3, T3.6 |
-| 33 | T3.3 |
-| 34 | T3.7 |
-| 35 | T2.4, T1.4 (транзакция), T3.9 |
-| 36 | T2.4, T2.3 (сортировки), T2.2 (порядок чеков/операций) |
-| 37, 38 | T1.4 (`shared/api/document-store`), T3.2 |
+| 1–8 | `src/entities/receipt/model/receipt.test.ts` |
+| 9–17 | `src/entities/operation/model/operation.test.ts` |
+| 18–19, 25–27 | `src/shared/lib/money/index.test.ts` |
+| 20–22 | `src/entities/receipt/model/receipt.test.ts` |
+| 23, 29 | `src/entities/purchase/model/purchase.test.ts` |
+| 24, 32 | `src/entities/category/model/category.test.ts` |
+| 28 | `src/shared/lib/date/index.test.ts` |
+| 30 | `src/entities/category/model/category.test.ts`, `src/entities/operation/model/operation.test.ts` |
+| 31 | `src/entities/operation/model/operation.test.ts` |
+| 33 | `src/entities/category/model/category.test.ts`, `src/app/model/stores.test.ts`; ручная проверка переключателя архивных категорий |
+| 34 | `src/app/model/stores.test.ts`; ручной сквозной сценарий T4.2 |
+| 35 | `src/entities/purchase/model/purchase.test.ts`, `src/app/model/stores.test.ts`; каскадное удаление проверено также в T4.2 |
+| 36 | `src/entities/purchase/model/purchase.test.ts`, `src/entities/receipt/model/receipt.test.ts`, `src/entities/operation/model/operation.test.ts`, `src/entities/category/model/category.test.ts` |
+| 37–38 | `src/shared/api/document-store/index.test.ts` |

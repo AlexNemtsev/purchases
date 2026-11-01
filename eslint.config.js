@@ -9,7 +9,7 @@ import tseslint from 'typescript-eslint';
 
 export default defineConfig(
   {
-    ignores: ['dist', '.svelte-kit', './src/lib/*'],
+    ignores: ['dist', 'build', '.svelte-kit', './src/lib/*'],
   },
 
   js.configs.recommended,

@@ -1,4 +1,4 @@
-import { MAX_AMOUNT_KOPECKS, MAX_PERMILLE } from '../../config/limits';
+import { MAX_AMOUNT_KOPECKS, MAX_PERMILLE } from '../../config';
 
 const moneyInputPattern = /^(\d+|\d{1,3}(?:[\s\u00a0\u202f]\d{3})+)(?:[.,](\d{1,2}))?$/u;
 const permilleInputPattern = /^(\d+)(?:[.,](\d))?$/u;

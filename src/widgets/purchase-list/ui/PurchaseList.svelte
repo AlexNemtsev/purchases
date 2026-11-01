@@ -1,8 +1,7 @@
 <script lang="ts">
   import { Button } from '$lib/components/ui/button';
-
-  import { PurchaseCard } from '../../entities/purchase';
-  import type { Purchase, PurchaseSummary } from '../../entities/purchase';
+  import { PurchaseCard } from '@/entities/purchase';
+  import type { Purchase, PurchaseSummary } from '@/entities/purchase';
 
   import { resolve } from '$app/paths';
 

@@ -7,8 +7,8 @@
 
   import { autoTitle, retitleOnDateChange } from '../../../entities/purchase';
   import type { Purchase } from '../../../entities/purchase';
-  import { createId } from '../../../shared/api/document-store';
-  import { MAX_TITLE_LENGTH } from '../../../shared/config/limits';
+  import { createId } from '../../../shared/api';
+  import { MAX_TITLE_LENGTH } from '../../../shared/config';
   import { formatDateRu, isValidIsoDate, localTodayIso } from '../../../shared/lib/date';
 
   interface Props {

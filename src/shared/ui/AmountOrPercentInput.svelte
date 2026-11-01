@@ -1,7 +1,7 @@
 <script lang="ts">
   import MoneyInput from './MoneyInput.svelte';
   import PermilleInput from './PermilleInput.svelte';
-  import { MAX_AMOUNT_KOPECKS, MAX_PERMILLE } from '../config/limits';
+  import { MAX_AMOUNT_KOPECKS, MAX_PERMILLE } from '../config';
   import { formatMoney, formatPermille, parseMoney, parsePermille, roundDiv } from '../lib/money';
 
   interface Props {

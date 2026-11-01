@@ -1,9 +1,8 @@
 <script lang="ts">
   import { Button } from '$lib/components/ui/button';
-
-  import type { Purchase, PurchaseSummary } from '../../entities/purchase';
-  import { formatDateRu } from '../../shared/lib/date';
-  import { formatMoney, formatPermille } from '../../shared/lib/money';
+  import type { Purchase, PurchaseSummary } from '@/entities/purchase';
+  import { formatDateRu } from '@/shared/lib/date';
+  import { formatMoney, formatPermille } from '@/shared/lib/money';
 
   import { resolve } from '$app/paths';
 

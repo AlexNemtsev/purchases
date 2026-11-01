@@ -1,5 +1,5 @@
 import type { Purchase, PurchaseSummary, PurchaseValidationError } from './types';
-import { MAX_TITLE_LENGTH } from '../../../shared/config/limits';
+import { MAX_TITLE_LENGTH } from '../../../shared/config';
 import { formatDateRu, isValidIsoDate } from '../../../shared/lib/date';
 import { roundDiv } from '../../../shared/lib/money';
 import { calculateOperationNet } from '../../operation/@x/purchase';

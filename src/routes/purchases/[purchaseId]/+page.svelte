@@ -1,22 +1,22 @@
 <script lang="ts">
   import { Button } from '$lib/components/ui/button';
-  import { getAppContext } from '@/app/model/context.svelte';
+  import { getAppContext } from '@/app';
   import type { Operation } from '@/entities/operation';
   import { calculatePurchaseSummary } from '@/entities/purchase';
   import type { Purchase } from '@/entities/purchase';
   import type { Receipt } from '@/entities/receipt';
   import { calculateReceiptEffectiveRate } from '@/entities/receipt';
-  import OperationEditor from '@/features/edit-operation/ui/OperationEditor.svelte';
-  import PurchaseEditor from '@/features/edit-purchase/ui/PurchaseEditor.svelte';
-  import ReceiptEditor from '@/features/edit-receipt/ui/ReceiptEditor.svelte';
+  import { OperationEditor } from '@/features/edit-operation';
+  import { PurchaseEditor } from '@/features/edit-purchase';
+  import { ReceiptEditor } from '@/features/edit-receipt';
   import { formatMoney } from '@/shared/lib/money';
   import ConfirmDialog from '@/shared/ui/ConfirmDialog.svelte';
   import EmptyState from '@/shared/ui/EmptyState.svelte';
   import PageHeader from '@/shared/ui/PageHeader.svelte';
   import PageLayout from '@/shared/ui/PageLayout.svelte';
-  import PurchaseByCategories from '@/widgets/purchase-by-categories/PurchaseByCategories.svelte';
-  import PurchaseByReceipts from '@/widgets/purchase-by-receipts/PurchaseByReceipts.svelte';
-  import PurchaseHeader from '@/widgets/purchase-header/PurchaseHeader.svelte';
+  import { PurchaseByCategories } from '@/widgets/purchase-by-categories';
+  import { PurchaseByReceipts } from '@/widgets/purchase-by-receipts';
+  import { PurchaseHeader } from '@/widgets/purchase-header';
 
   import type { PageProps } from './$types';
 

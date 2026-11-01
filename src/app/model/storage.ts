@@ -3,7 +3,7 @@ import type { Category } from '../../entities/category';
 import type { Operation } from '../../entities/operation';
 import type { Purchase } from '../../entities/purchase';
 import type { Receipt } from '../../entities/receipt';
-import { SCHEMA_VERSION, type StorageDocument } from '../../shared/api/document-store';
+import { SCHEMA_VERSION, type StorageDocument } from '../../shared/api';
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null && !Array.isArray(value);

@@ -1,12 +1,11 @@
 <script lang="ts">
   import { Button } from '$lib/components/ui/button';
-
-  import type { Category } from '../../entities/category';
-  import { OperationCard, calculateOperationNet } from '../../entities/operation';
-  import type { Operation } from '../../entities/operation';
-  import { calculateReceiptSummary, ReceiptCard } from '../../entities/receipt';
-  import type { Receipt } from '../../entities/receipt';
-  import EmptyState from '../../shared/ui/EmptyState.svelte';
+  import type { Category } from '@/entities/category';
+  import { OperationCard, calculateOperationNet } from '@/entities/operation';
+  import type { Operation } from '@/entities/operation';
+  import { calculateReceiptSummary, ReceiptCard } from '@/entities/receipt';
+  import type { Receipt } from '@/entities/receipt';
+  import EmptyState from '@/shared/ui/EmptyState.svelte';
 
   interface Props {
     receipts: readonly Receipt[];

@@ -5,7 +5,7 @@ import type {
   CategorySummary,
   CategoryValidationError,
 } from './types';
-import { MAX_COMMENT_LENGTH, MAX_TITLE_LENGTH } from '../../../shared/config/limits';
+import { MAX_COMMENT_LENGTH, MAX_TITLE_LENGTH } from '../../../shared/config';
 import { calculateOperationNet } from '../../operation/@x/category';
 import { calculateReceiptEffectiveRate } from '../../receipt/@x/category';
 import type { Receipt } from '../../receipt/@x/category';

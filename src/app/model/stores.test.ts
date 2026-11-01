@@ -1,17 +1,10 @@
 import { describe, expect, it } from 'vitest';
 
-import { createPurchaseStore } from './store.svelte';
-import type { Purchase } from './types';
-import {
-  createInMemoryDocumentStore,
-  type StorageDocument,
-} from '../../../shared/api/document-store';
-import { createCategoryStore } from '../../category/model/store.svelte';
-import type { Category } from '../../category/model/types';
-import { createOperationStore } from '../../operation/model/store.svelte';
-import type { Operation } from '../../operation/model/types';
-import { createReceiptStore } from '../../receipt/model/store.svelte';
-import type { Receipt } from '../../receipt/model/types';
+import { createCategoryStore, type Category } from '../../entities/category';
+import { createOperationStore, type Operation } from '../../entities/operation';
+import { createPurchaseStore, type Purchase } from '../../entities/purchase';
+import { createReceiptStore, type Receipt } from '../../entities/receipt';
+import { createInMemoryDocumentStore, type StorageDocument } from '../../shared/api';
 
 type TestDocument = StorageDocument<Purchase, Receipt, Operation, Category>;
 

@@ -5,8 +5,14 @@
   import { ModeWatcher } from 'mode-watcher';
   import { onMount, setContext } from 'svelte';
 
-  import { APP_CONTEXT_KEY, type AppDocument, type AppServices } from '../app/model/context.svelte';
-  import { createEmptyAppDocument, validateAppDocument } from '../app/model/storage';
+  import {
+    APP_CONTEXT_KEY,
+    createEmptyAppDocument,
+    validateAppDocument,
+    type AppDocument,
+    type AppServices,
+  } from '@/app';
+
   import { createCategoryStore } from '../entities/category';
   import { createOperationStore } from '../entities/operation';
   import { createPurchaseStore } from '../entities/purchase';
@@ -15,7 +21,7 @@
     createDocumentStore,
     createLocalStorageAdapter,
     DocumentStoreError,
-  } from '../shared/api/document-store';
+  } from '../shared/api';
 
   import './app.css';
 

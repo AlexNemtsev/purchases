@@ -7,8 +7,8 @@
   import { Textarea } from '$lib/components/ui/textarea';
 
   import type { Category } from '../../../entities/category';
-  import { createId } from '../../../shared/api/document-store';
-  import { MAX_COMMENT_LENGTH, MAX_TITLE_LENGTH } from '../../../shared/config/limits';
+  import { createId } from '../../../shared/api';
+  import { MAX_COMMENT_LENGTH, MAX_TITLE_LENGTH } from '../../../shared/config';
 
   interface Props {
     open: boolean;

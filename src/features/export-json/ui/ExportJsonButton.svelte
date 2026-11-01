@@ -1,10 +1,13 @@
 <script lang="ts">
   import { Button } from '$lib/components/ui/button';
 
-  import { getAppContext } from '../../../app/model/context.svelte';
   import { localTodayIso } from '../../../shared/lib/date';
 
-  const appContext = getAppContext();
+  interface Props {
+    getDocument: () => Promise<object>;
+  }
+
+  let { getDocument }: Props = $props();
   let exporting = $state(false);
   let error = $state('');
 
@@ -13,11 +16,7 @@
     exporting = true;
 
     try {
-      const document = await appContext.current?.documentStore.getDocument();
-
-      if (!document) {
-        throw new Error('Хранилище ещё не готово.');
-      }
+      const document = await getDocument();
 
       const exportData = { ...document, exportedAt: new Date().toISOString() };
       const blob = new Blob([JSON.stringify(exportData, null, 2)], {

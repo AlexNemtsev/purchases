@@ -6,8 +6,8 @@
   import { Textarea } from '$lib/components/ui/textarea';
 
   import type { PercentBase, Receipt, ReceiptDiscountPart } from '../../../entities/receipt';
-  import { createId } from '../../../shared/api/document-store';
-  import { MAX_COMMENT_LENGTH } from '../../../shared/config/limits';
+  import { createId } from '../../../shared/api';
+  import { MAX_COMMENT_LENGTH } from '../../../shared/config';
   import {
     calculateDiscountValue,
     type AmountDiscount,

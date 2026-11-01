@@ -1,10 +1,6 @@
 import { removeByReceipts, sortOperations, validateOperation } from './operation';
 import type { Operation } from './types';
-import {
-  DocumentStoreError,
-  type DocumentStore,
-  type StorageDocument,
-} from '../../../shared/api/document-store';
+import { DocumentStoreError, type DocumentStore, type StorageDocument } from '../../../shared/api';
 
 export const createOperationStore = <
   T extends StorageDocument<{ id: string }, { id: string }, Operation, { id: string }>,

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { MAX_AMOUNT_KOPECKS } from '../config/limits';
+  import { MAX_AMOUNT_KOPECKS } from '../config';
 
   interface Props {
     id: string;

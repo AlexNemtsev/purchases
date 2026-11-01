@@ -1,12 +1,12 @@
 <script lang="ts">
   import { Button } from '$lib/components/ui/button';
-  import { getAppContext } from '@/app/model/context.svelte';
+  import { getAppContext } from '@/app';
   import type { Category } from '@/entities/category';
-  import CategoryEditor from '@/features/manage-categories/ui/CategoryEditor.svelte';
+  import { CategoryEditor } from '@/features/manage-categories';
   import EmptyState from '@/shared/ui/EmptyState.svelte';
   import PageHeader from '@/shared/ui/PageHeader.svelte';
   import PageLayout from '@/shared/ui/PageLayout.svelte';
-  import CategoryList from '@/widgets/category-list/CategoryList.svelte';
+  import { CategoryList } from '@/widgets/category-list';
 
   const appContext = getAppContext();
   const app = $derived(appContext.current);
