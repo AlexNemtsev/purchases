@@ -12,12 +12,12 @@
 
   interface MenuItem {
     label: string;
-    href: '/' | '/categories' | '/misc' | '/purchases';
+    href: '/' | '/categories' | '/misc';
     icon: Component<LucideProps, object, ''>;
   }
 
   const menuItems: MenuItem[] = [
-    { label: 'Закупки', href: '/purchases', icon: ReceiptRussianRuble },
+    { label: 'Закупки', href: '/', icon: ReceiptRussianRuble },
     { label: 'Категории', href: '/categories', icon: ListIcon },
     { label: 'Разное', href: '/misc', icon: GearIcon },
   ];
@@ -26,7 +26,11 @@
 <NavigationMenu.Root class="flex-0 justify-center border-t md:hidden">
   <NavigationMenu.List>
     {#each menuItems as item (item.href)}
-      {const isActive = $derived(page.url.pathname === item.href)}
+      {const isActive = $derived(
+        item.href === '/'
+          ? page.url.pathname === '/' || page.url.pathname.startsWith('/purchases/')
+          : page.url.pathname === item.href
+      )}
       <NavigationMenu.Item aria-current={isActive ? 'page' : undefined}>
         <NavigationMenu.Link
           class={[

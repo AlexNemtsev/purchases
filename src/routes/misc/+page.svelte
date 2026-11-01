@@ -1,4 +1,5 @@
 <script>
+  import ExportJsonButton from '@/features/export-json/ui/ExportJsonButton.svelte';
   import PageHeader from '@/shared/ui/PageHeader.svelte';
   import PageLayout from '@/shared/ui/PageLayout.svelte';
 
@@ -14,5 +15,6 @@
 
 <PageLayout showNavigation>
   <ThemeSwitcher />
+  <ExportJsonButton />
   <CashbackCalculator />
 </PageLayout>
