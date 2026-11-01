@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { Button } from '$lib/components/ui/button';
   import { getAppContext } from '@/app';
   import type { Category } from '@/entities/category';
   import { CategoryEditor } from '@/features/manage-categories';
@@ -88,11 +87,10 @@
 
 <PageHeader {backHref} backLabel="К закупке">Категории</PageHeader>
 
-<PageLayout showNavigation>
+<PageLayout showNavigation onAdd={openNewCategory}>
   {#if app}
     <div class="flex items-center justify-between gap-3">
       <CheckboxField id="show-archived" label="Показывать архивные" bind:checked={showArchived} />
-      <Button onclick={openNewCategory}>Добавить</Button>
     </div>
     {#if actionError}
       <p class="text-sm text-destructive" role="alert">{actionError}</p>
