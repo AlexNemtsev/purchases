@@ -97,7 +97,7 @@ const createTestLocalStore = (storage: TestStorage, events?: TestEventTarget) =>
   createDocumentStore(createLocalStorageAdapter(storage, events), storeOptions);
 
 const exerciseCollectionContract = async (store: DocumentStore<TestDocument>) => {
-  const purchases = store.collection('purchases');
+  const purchases = store.collection<Item>('purchases');
 
   expect(await purchases.getAll()).toEqual([]);
   await purchases.add({ id: 'p1', value: 'first' });
@@ -151,11 +151,11 @@ describe('document-store collection contract', () => {
   it('notifies subscribers after loading and each committed mutation', async () => {
     const store = createInMemoryDocumentStore(storeOptions);
     const snapshots: string[] = [];
-    const unsubscribe = store.collection('purchases').subscribe(({ status, items }) => {
+    const unsubscribe = store.collection<Item>('purchases').subscribe(({ status, items }) => {
       snapshots.push(`${status}:${items.map((item) => item.id).join(',')}`);
     });
 
-    await store.collection('purchases').add({ id: 'p1', value: 'first' });
+    await store.collection<Item>('purchases').add({ id: 'p1', value: 'first' });
 
     expect(snapshots).toContain('ready:');
     expect(snapshots.at(-1)).toBe('ready:p1');
@@ -206,22 +206,25 @@ describe('document-store transactions', () => {
     const storage = new TestStorage();
     const store = createTestLocalStore(storage);
 
-    await store.collection('purchases').add({ id: 'p1', value: 'saved' });
+    await store.collection<Item>('purchases').add({ id: 'p1', value: 'saved' });
     const previousValue = storage.getItem(STORAGE_KEY);
     storage.failWrites = new Error('quota exceeded');
 
     await expect(
-      store.collection('purchases').add({ id: 'p2', value: 'not saved' })
+      store.collection<Item>('purchases').add({ id: 'p2', value: 'not saved' })
     ).rejects.toMatchObject({
       code: 'write-failed',
     });
 
     expect(storage.getItem(STORAGE_KEY)).toBe(previousValue);
-    expect(await store.collection('purchases').getAll()).toEqual([{ id: 'p1', value: 'saved' }]);
+
+    expect(await store.collection<Item>('purchases').getAll()).toEqual([
+      { id: 'p1', value: 'saved' },
+    ]);
   });
 
   it('rejects duplicate IDs and updates to missing records', async () => {
-    const purchases = createInMemoryDocumentStore(storeOptions).collection('purchases');
+    const purchases = createInMemoryDocumentStore(storeOptions).collection<Item>('purchases');
 
     await purchases.add({ id: 'p1', value: 'first' });
 
@@ -243,11 +246,9 @@ describe('document-store validation and external changes', () => {
 
     await expect(store.getDocument()).rejects.toMatchObject({ code: 'invalid-json' });
 
-    await expect(store.collection('purchases').add({ id: 'p1', value: 'x' })).rejects.toMatchObject(
-      {
-        code: 'invalid-json',
-      }
-    );
+    await expect(
+      store.collection<Item>('purchases').add({ id: 'p1', value: 'x' })
+    ).rejects.toMatchObject({ code: 'invalid-json' });
 
     expect(store.getRawValue()).toBe('{broken');
   });
@@ -285,7 +286,7 @@ describe('document-store validation and external changes', () => {
     const events = new TestEventTarget();
     storage.onExternalWrite = () => events.dispatchStorage(STORAGE_KEY);
     const store = createTestLocalStore(storage, events);
-    const purchases = store.collection('purchases');
+    const purchases = store.collection<Item>('purchases');
     const snapshots: string[] = [];
 
     await purchases.getAll();
@@ -308,10 +309,10 @@ describe('document-store validation and external changes', () => {
     const store = createTestLocalStore(storage, events);
     const snapshots: string[] = [];
 
-    await store.collection('purchases').getAll();
+    await store.collection<Item>('purchases').getAll();
 
     store
-      .collection('purchases')
+      .collection<Item>('purchases')
       .subscribe(({ items }) => snapshots.push(items.map(({ id }) => id).join()));
 
     events.dispatchStorage('unrelated');

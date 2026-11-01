@@ -36,10 +36,10 @@ export const createId = (source: IdGeneratorSource | undefined = globalThis.cryp
 };
 
 export interface StorageDocument<
-  Purchase = unknown,
-  Receipt = unknown,
-  Operation = unknown,
-  Category = unknown,
+  Purchase extends { id: string } = { id: string },
+  Receipt extends { id: string } = { id: string },
+  Operation extends { id: string } = { id: string },
+  Category extends { id: string } = { id: string },
 > {
   schemaVersion: 1;
   purchases: Purchase[];
@@ -48,10 +48,7 @@ export interface StorageDocument<
   categories: Category[];
 }
 
-export type StorageCollectionKey<T extends StorageDocument> = {
-  [K in keyof T]: T[K] extends Array<{ id: string }> ? K : never;
-}[keyof T] &
-  string;
+export type StorageCollectionKey = 'purchases' | 'receipts' | 'operations' | 'categories';
 
 export interface CollectionSnapshot<T> {
   status: 'loading' | 'ready' | 'error';
@@ -73,9 +70,9 @@ export interface DocumentTransaction<T extends StorageDocument> {
 }
 
 export interface DocumentStore<T extends StorageDocument> {
-  collection<K extends StorageCollectionKey<T>>(
+  collection<Item extends { id: string }, K extends StorageCollectionKey = StorageCollectionKey>(
     key: K
-  ): Collection<Extract<T[K], Array<{ id: string }>>[number]>;
+  ): Collection<Item>;
   getDocument(): Promise<T>;
   transaction(mutator: (transaction: DocumentTransaction<T>) => void): Promise<void>;
   getRawValue(): string | null;
@@ -115,12 +112,21 @@ const hasDocumentCollections = (value: unknown): value is StorageDocument => {
     return false;
   }
 
+  const collections = [value.purchases, value.receipts, value.operations, value.categories];
+
   return (
     value.schemaVersion === SCHEMA_VERSION &&
-    Array.isArray(value.purchases) &&
-    Array.isArray(value.receipts) &&
-    Array.isArray(value.operations) &&
-    Array.isArray(value.categories)
+    collections.every(
+      (collection) =>
+        Array.isArray(collection) &&
+        collection.every(
+          (item) =>
+            typeof item === 'object' &&
+            item !== null &&
+            !Array.isArray(item) &&
+            typeof (item as { id?: unknown }).id === 'string'
+        )
+    )
   );
 };
 
@@ -147,24 +153,23 @@ class SharedDocumentStore<T extends StorageDocument> implements DocumentStore<T>
     });
   }
 
-  collection<K extends StorageCollectionKey<T>>(
+  collection<Item extends { id: string }, K extends StorageCollectionKey = StorageCollectionKey>(
     key: K
-  ): Collection<Extract<T[K], Array<{ id: string }>>[number]> {
-    type Item = Extract<T[K], Array<{ id: string }>>[number];
+  ): Collection<Item> {
     const collectionKey = String(key);
     const listeners = this.getSubscribers(collectionKey);
 
     return {
-      getAll: async () => clone((await this.getDocument())[key] as Item[]),
+      getAll: async () => clone((await this.getDocument())[key] as unknown as Item[]),
       getById: async (id) => {
-        const items = (await this.getDocument())[key] as Item[];
+        const items = (await this.getDocument())[key] as unknown as Item[];
         const item = items.find((entry) => entry.id === id);
 
         return item ? clone(item) : undefined;
       },
       add: async (item) => {
         await this.transaction(({ document }) => {
-          const items = document[key] as Item[];
+          const items = document[key] as unknown as Item[];
 
           if (items.some((entry) => entry.id === item.id)) {
             throw new DocumentStoreError('invalid-document', `Duplicate id "${item.id}"`);
@@ -175,7 +180,7 @@ class SharedDocumentStore<T extends StorageDocument> implements DocumentStore<T>
       },
       update: async (item) => {
         await this.transaction(({ document }) => {
-          const items = document[key] as Item[];
+          const items = document[key] as unknown as Item[];
           const index = items.findIndex((entry) => entry.id === item.id);
 
           if (index < 0) {
@@ -187,7 +192,7 @@ class SharedDocumentStore<T extends StorageDocument> implements DocumentStore<T>
       },
       remove: async (id) => {
         await this.transaction(({ document }) => {
-          const items = document[key] as Item[];
+          const items = document[key] as unknown as Item[];
           const remaining = items.filter((entry) => entry.id !== id);
           items.splice(0, items.length, ...remaining);
         });
@@ -384,8 +389,8 @@ class SharedDocumentStore<T extends StorageDocument> implements DocumentStore<T>
     this.notifyAll();
   }
 
-  private getSnapshot<K extends StorageCollectionKey<T>>(key: string): CollectionSnapshot<unknown> {
-    const collection = this.document?.[key as K];
+  private getSnapshot(key: string): CollectionSnapshot<unknown> {
+    const collection = this.document?.[key as keyof T];
     const items = Array.isArray(collection) ? collection : [];
     let status: CollectionSnapshot<unknown>['status'] = 'loading';
 
