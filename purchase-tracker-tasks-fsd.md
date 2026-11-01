@@ -431,6 +431,27 @@ SvelteKit для слоя страниц, который Steiger не распо
 подтверждение удаления показывает каскадное количество, архивирование не
 требует подтверждения.
 
+### T4.4 Правки интерфейса после T4 (M)
+Документ: `purchase-tracker-ui-fixes.md`. ТЗ: §10, кейс 34.
+
+Готово:
+- Ввод скидки: текст поля больше не перезаписывается во время набора
+  (`AmountOrPercentInput`), `,00` не подставляется.
+- Со страницы категорий, открытой из закупки (`/categories?from=<id>`),
+  есть кнопка «Назад» в шапке (`PageHeader`); ведёт на закупку без
+  `history.back()`.
+- Экран чека `/purchases/[purchaseId]/receipts/[receiptId]` и виджет
+  `receipt-operations`; в закупке чеки — карточки со ссылкой на экран чека.
+- Вид «Категории» в закупке показывает расходы и итого без операций.
+- shadcn-svelte: `Input`, `Label`, `Select`, `Checkbox`, `Badge`, `Alert`,
+  `Card`, `ToggleGroup`; общие обёртки `SelectField`, `CheckboxField`.
+- Кнопки изменить/удалить/архив убраны в меню «⋯» (`ActionsMenu` на
+  `DropdownMenu`) для закупок, чеков, операций и категорий.
+- В `vitest.config.ts` добавлен алиас `$lib`.
+Проверено: `pnpm test` (62), `pnpm check`, `pnpm check:fsd`, ESLint (одно
+прежнее предупреждение), `pnpm build`; ручной проход в браузере: ввод
+скидки, возврат из категорий, экран чека, меню, select и чекбоксы.
+
 ---
 
 ## Покрытие тест-кейсов ТЗ §17
@@ -447,7 +468,7 @@ SvelteKit для слоя страниц, который Steiger не распо
 | 30 | `src/entities/category/model/category.test.ts`, `src/entities/operation/model/operation.test.ts` |
 | 31 | `src/entities/operation/model/operation.test.ts` |
 | 33 | `src/entities/category/model/category.test.ts`, `src/app/model/stores.test.ts`; ручная проверка переключателя архивных категорий |
-| 34 | `src/app/model/stores.test.ts`; ручной сквозной сценарий T4.2 |
+| 34 | `src/app/model/stores.test.ts`; ручной проход экрана чека и вида «Категории» (T4.4) |
 | 35 | `src/entities/purchase/model/purchase.test.ts`, `src/app/model/stores.test.ts`; каскадное удаление проверено также в T4.2 |
 | 36 | `src/entities/purchase/model/purchase.test.ts`, `src/entities/receipt/model/receipt.test.ts`, `src/entities/operation/model/operation.test.ts`, `src/entities/category/model/category.test.ts` |
 | 37–38 | `src/shared/api/document-store/index.test.ts` |

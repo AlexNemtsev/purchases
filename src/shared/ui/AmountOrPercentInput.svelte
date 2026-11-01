@@ -1,6 +1,11 @@
 <script lang="ts">
+  import { untrack } from 'svelte';
+
+  import { Label } from '$lib/components/ui/label';
+
   import MoneyInput from './MoneyInput.svelte';
   import PermilleInput from './PermilleInput.svelte';
+  import SelectField from './SelectField.svelte';
   import { MAX_AMOUNT_KOPECKS, MAX_PERMILLE } from '../config';
   import { formatMoney, formatPermille, parseMoney, parsePermille, roundDiv } from '../lib/money';
 
@@ -16,14 +21,30 @@
   }
 
   let { id, label, mode, value, base, error, onValidityChange, onChange }: Props = $props();
+  const modeOptions = [
+    { value: 'amount', label: 'Сумма' },
+    { value: 'percent', label: 'Процент' },
+  ];
   let text = $state('');
   let conversionError = $state('');
 
+  // Текст перезаписывается, только если он не соответствует внешнему значению,
+  // иначе ввод «5» превращался бы в «5,00» прямо во время набора.
   $effect(() => {
+    const currentMode = mode;
+    const currentValue = value;
+    const parsed = untrack(() =>
+      currentMode === 'amount' ? parseMoney(text) : parsePermille(text)
+    );
+
+    if (parsed === currentValue) {
+      return;
+    }
+
     text =
-      mode === 'amount'
-        ? formatMoney(value).replace(/ ₽$/u, '')
-        : formatPermille(value).replace(/ %$/u, '');
+      currentMode === 'amount'
+        ? formatMoney(currentValue).replace(/ ₽$/u, '')
+        : formatPermille(currentValue).replace(/ %$/u, '');
 
     onValidityChange?.(true);
   });
@@ -103,16 +124,13 @@
 </script>
 
 <div class="flex flex-col gap-2">
-  <label class="text-sm font-medium" for={`${id}-mode`}>{label}</label>
-  <select
+  <Label for={`${id}-mode`}>{label}</Label>
+  <SelectField
     id={`${id}-mode`}
-    class="h-10 rounded-md border bg-background px-3 text-sm"
     value={mode}
-    onchange={(event) => switchMode(event.currentTarget.value as 'amount' | 'percent')}
-  >
-    <option value="amount">Сумма</option>
-    <option value="percent">Процент</option>
-  </select>
+    options={modeOptions}
+    onValueChange={(next) => switchMode(next as 'amount' | 'percent')}
+  />
   <p class="text-xs text-muted-foreground">Эквивалент: {equivalent}</p>
   {#if mode === 'amount'}
     <MoneyInput

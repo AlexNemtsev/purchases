@@ -1,4 +1,7 @@
 <script lang="ts">
+  import { Input } from '$lib/components/ui/input';
+  import { Label } from '$lib/components/ui/label';
+
   import { MAX_AMOUNT_KOPECKS } from '../config';
 
   interface Props {
@@ -12,22 +15,21 @@
   let { id, label, value, error, onValueChange }: Props = $props();
 </script>
 
-<label class="flex flex-col gap-1 text-sm font-medium" for={id}>
-  {label}
-  <input
+<div class="flex flex-col gap-2">
+  <Label for={id}>{label}</Label>
+  <Input
     {id}
-    class="h-10 rounded-md border bg-background px-3 font-normal"
     type="text"
     inputmode="decimal"
     autocomplete="off"
     placeholder="0,00"
-    bind:value
+    {value}
     oninput={(event) => onValueChange(event.currentTarget.value)}
     aria-invalid={Boolean(error)}
     aria-describedby={error ? `${id}-error` : undefined}
     data-max-kopecks={MAX_AMOUNT_KOPECKS}
   />
   {#if error}
-    <span class="text-xs font-normal text-destructive" id={`${id}-error`}>{error}</span>
+    <span class="text-xs text-destructive" id={`${id}-error`}>{error}</span>
   {/if}
-</label>
+</div>

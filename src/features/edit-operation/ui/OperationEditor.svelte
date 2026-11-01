@@ -1,4 +1,5 @@
 <script lang="ts">
+  import * as Alert from '$lib/components/ui/alert';
   import { Button } from '$lib/components/ui/button';
   import * as Dialog from '$lib/components/ui/dialog';
   import * as Field from '$lib/components/ui/field';
@@ -13,8 +14,10 @@
   import { MAX_COMMENT_LENGTH } from '../../../shared/config';
   import { formatMoney, parseMoney } from '../../../shared/lib/money';
   import AmountOrPercentInput from '../../../shared/ui/AmountOrPercentInput.svelte';
+  import CheckboxField from '../../../shared/ui/CheckboxField.svelte';
   import EmptyState from '../../../shared/ui/EmptyState.svelte';
   import MoneyInput from '../../../shared/ui/MoneyInput.svelte';
+  import SelectField from '../../../shared/ui/SelectField.svelte';
   import WarningList from '../../../shared/ui/WarningList.svelte';
 
   interface Props {
@@ -87,6 +90,9 @@
     operation ? categoryForOperation(categories, operation.categoryId) : undefined
   );
   const activeCategories = $derived(categories.filter((category) => !category.archived));
+  const categoryOptions = $derived(
+    activeCategories.map((category) => ({ value: category.id, label: category.title }))
+  );
   const parsedAmount = $derived(parseMoney(amountText) ?? 0);
   const parsedRefund = $derived(refundEnabled ? (parseMoney(refundText) ?? 0) : undefined);
   const draftOperation = $derived<Operation>({
@@ -223,23 +229,21 @@
           />
         </Field.Field>
         {#if currentCategory?.archived}
-          <div class="rounded-md border p-3 text-sm text-muted-foreground">
-            Прежняя категория: {currentCategory.title}. Выберите активную категорию, чтобы заменить
-            её.
-          </div>
+          <Alert.Root>
+            <Alert.Description>
+              Прежняя категория: {currentCategory.title}. Выберите активную категорию, чтобы
+              заменить её.
+            </Alert.Description>
+          </Alert.Root>
         {/if}
         <Field.Field>
           <Label for="operation-category">Категория</Label>
-          <select
+          <SelectField
             id="operation-category"
-            class="h-10 rounded-md border bg-background px-3 text-sm"
             bind:value={selectedCategoryId}
-          >
-            <option value="">Выберите категорию</option>
-            {#each activeCategories as category (category.id)}
-              <option value={category.id}>{category.title}</option>
-            {/each}
-          </select>
+            options={categoryOptions}
+            placeholder="Выберите категорию"
+          />
           {#if activeCategories.length === 0 && !currentCategory?.archived}
             <EmptyState
               title="Нет активных категорий"
@@ -247,20 +251,16 @@
             />
           {/if}
         </Field.Field>
-        <label class="flex items-center gap-2 text-sm" for="operation-refund-enabled">
-          <input
-            id="operation-refund-enabled"
-            type="checkbox"
-            class="size-4"
-            bind:checked={refundEnabled}
-            onchange={(event) => {
-              if (event.currentTarget.checked && !refundText) {
-                refundText = amountText;
-              }
-            }}
-          />
-          Возврат
-        </label>
+        <CheckboxField
+          id="operation-refund-enabled"
+          label="Возврат"
+          bind:checked={refundEnabled}
+          onCheckedChange={(checked) => {
+            if (checked && !refundText) {
+              refundText = amountText;
+            }
+          }}
+        />
         {#if refundEnabled}
           <Field.Field>
             <MoneyInput
@@ -271,15 +271,11 @@
             />
           </Field.Field>
         {/if}
-        <label class="flex items-center gap-2 text-sm" for="operation-discount-enabled">
-          <input
-            id="operation-discount-enabled"
-            type="checkbox"
-            class="size-4"
-            bind:checked={discountEnabled}
-          />
-          Индивидуальная скидка
-        </label>
+        <CheckboxField
+          id="operation-discount-enabled"
+          label="Индивидуальная скидка"
+          bind:checked={discountEnabled}
+        />
         {#if discountEnabled}
           <AmountOrPercentInput
             id="operation-discount"

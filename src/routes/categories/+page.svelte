@@ -3,12 +3,25 @@
   import { getAppContext } from '@/app';
   import type { Category } from '@/entities/category';
   import { CategoryEditor } from '@/features/manage-categories';
+  import CheckboxField from '@/shared/ui/CheckboxField.svelte';
   import EmptyState from '@/shared/ui/EmptyState.svelte';
   import PageHeader from '@/shared/ui/PageHeader.svelte';
   import PageLayout from '@/shared/ui/PageLayout.svelte';
   import { CategoryList } from '@/widgets/category-list';
 
   const appContext = getAppContext();
+  const fromPurchaseId = $derived(page.url.searchParams.get('from'));
+  const fromPurchaseExists = $derived(
+    Boolean(
+      fromPurchaseId &&
+      appContext.current?.purchases.purchases.some((purchase) => purchase.id === fromPurchaseId)
+    )
+  );
+  const backHref = $derived(
+    fromPurchaseExists && fromPurchaseId
+      ? resolve('/purchases/[purchaseId]', { purchaseId: fromPurchaseId })
+      : undefined
+  );
   const app = $derived(appContext.current);
   let showArchived = $state(false);
   let editorOpen = $state(false);
@@ -64,21 +77,21 @@
       actionError = error instanceof Error ? error.message : 'Не удалось восстановить категорию.';
     }
   };
+
+  import { resolve } from '$app/paths';
+  import { page } from '$app/state';
 </script>
 
 <svelte:head>
   <title>Категории</title>
 </svelte:head>
 
-<PageHeader>Категории</PageHeader>
+<PageHeader {backHref} backLabel="К закупке">Категории</PageHeader>
 
 <PageLayout showNavigation>
   {#if app}
     <div class="flex items-center justify-between gap-3">
-      <label class="flex items-center gap-2 text-sm" for="show-archived">
-        <input id="show-archived" bind:checked={showArchived} type="checkbox" class="size-4" />
-        Показывать архивные
-      </label>
+      <CheckboxField id="show-archived" label="Показывать архивные" bind:checked={showArchived} />
       <Button onclick={openNewCategory}>Добавить</Button>
     </div>
     {#if actionError}

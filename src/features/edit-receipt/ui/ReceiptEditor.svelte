@@ -16,6 +16,7 @@
   import { formatMoney, parseMoney } from '../../../shared/lib/money';
   import AmountOrPercentInput from '../../../shared/ui/AmountOrPercentInput.svelte';
   import MoneyInput from '../../../shared/ui/MoneyInput.svelte';
+  import SelectField from '../../../shared/ui/SelectField.svelte';
 
   interface Props {
     open: boolean;
@@ -34,6 +35,10 @@
   let secondMode = $state<'amount' | 'percent'>('amount');
   let secondValue = $state(0);
   let secondValid = $state(true);
+  const baseOptions = [
+    { value: 'original', label: 'Исходная сумма' },
+    { value: 'afterPrevious', label: 'После первой скидки' },
+  ];
   let percentBase = $state<PercentBase>('original');
   let comment = $state('');
   let error = $state('');
@@ -177,14 +182,12 @@
           {#if secondMode === 'percent'}
             <Field.Field>
               <Label for="receipt-discount-base">База второй скидки</Label>
-              <select
+              <SelectField
                 id="receipt-discount-base"
-                class="h-10 rounded-md border bg-background px-3 text-sm"
-                bind:value={percentBase}
-              >
-                <option value="original">Исходная сумма</option>
-                <option value="afterPrevious">После первой скидки</option>
-              </select>
+                value={percentBase}
+                onValueChange={(next) => (percentBase = next as PercentBase)}
+                options={baseOptions}
+              />
             </Field.Field>
           {/if}
           <Button type="button" variant="outline" onclick={() => (secondEnabled = false)}>

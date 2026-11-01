@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { Badge } from '$lib/components/ui/badge';
+
   import type { Category } from '../model';
 
   interface Props {
@@ -8,10 +10,6 @@
   let { category }: Props = $props();
 </script>
 
-<span
-  class={category.archived
-    ? 'inline-flex rounded-full bg-muted px-2 py-0.5 text-sm text-muted-foreground'
-    : 'inline-flex rounded-full bg-secondary px-2 py-0.5 text-sm'}
->
+<Badge variant={category.archived ? 'outline' : 'secondary'} class="h-auto text-sm">
   {category.title}
-</span>
+</Badge>

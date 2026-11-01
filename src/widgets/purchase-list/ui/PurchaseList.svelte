@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { Button } from '$lib/components/ui/button';
   import { PurchaseCard } from '@/entities/purchase';
   import type { Purchase, PurchaseSummary } from '@/entities/purchase';
+  import ActionsMenu from '@/shared/ui/ActionsMenu.svelte';
 
   import { resolve } from '$app/paths';
 
@@ -13,19 +13,34 @@
   }
 
   let { purchases, summaries, onEdit, onDelete }: Props = $props();
+  const linkClass = [
+    'absolute inset-0 rounded-4xl',
+    'focus-visible:ring-3 focus-visible:ring-ring/30 focus-visible:outline-none',
+  ].join(' ');
 </script>
 
 {#each purchases as purchase (purchase.id)}
   {@const summary = summaries.get(purchase.id)}
   {#if summary}
-    <article class="rounded-lg border p-1">
-      <a class="block" href={resolve('/purchases/[purchaseId]', { purchaseId: purchase.id })}>
-        <PurchaseCard {purchase} {summary} />
-      </a>
-      <div class="flex justify-end gap-2 px-3 pb-3">
-        <Button variant="outline" size="sm" onclick={() => onEdit(purchase)}>Изменить</Button>
-        <Button variant="destructive" size="sm" onclick={() => onDelete(purchase)}>Удалить</Button>
-      </div>
-    </article>
+    <div class="relative">
+      <PurchaseCard {purchase} {summary}>
+        {#snippet action()}
+          <div class="relative z-10">
+            <ActionsMenu
+              label={`Действия: ${purchase.title}`}
+              actions={[
+                { label: 'Изменить', onSelect: () => onEdit(purchase) },
+                { label: 'Удалить', destructive: true, onSelect: () => onDelete(purchase) },
+              ]}
+            />
+          </div>
+        {/snippet}
+      </PurchaseCard>
+      <a
+        class={linkClass}
+        href={resolve('/purchases/[purchaseId]', { purchaseId: purchase.id })}
+        aria-label={`Открыть закупку ${purchase.title}`}
+      ></a>
+    </div>
   {/if}
 {/each}

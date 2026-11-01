@@ -40,8 +40,11 @@
       return;
     }
 
-    date = purchase?.date ?? localTodayIso();
-    title = purchase?.title ?? autoTitle(date);
+    // Эффект не должен зависеть от `date`, иначе выбор даты сбрасывается.
+    const initialDate = purchase?.date ?? localTodayIso();
+
+    date = initialDate;
+    title = purchase?.title ?? autoTitle(initialDate);
     error = '';
   });
 

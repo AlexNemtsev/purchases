@@ -1,30 +1,41 @@
 <script lang="ts">
+  import type { Snippet } from 'svelte';
+
+  import * as Card from '$lib/components/ui/card';
+
   import { formatMoney, formatPermille } from '../../../shared/lib/money';
   import type { Receipt, ReceiptSummary } from '../model';
 
   interface Props {
     receipt: Receipt;
     summary: ReceiptSummary;
+    action?: Snippet;
   }
 
-  let { receipt, summary }: Props = $props();
+  let { receipt, summary, action }: Props = $props();
 </script>
 
-<article class="rounded-lg border p-4">
-  <div class="flex items-start justify-between gap-4">
-    <h3 class="font-medium">Чек</h3>
-    <strong>{formatMoney(summary.operationsNetKopecks)}</strong>
-  </div>
-  <p class="mt-1 text-sm text-muted-foreground">
-    Сумма: {formatMoney(receipt.amountKopecks)} · Скидка: {formatMoney(summary.discountKopecks)}
-    ({summary.effectivePermille === null ? '—' : formatPermille(summary.effectivePermille)})
-  </p>
-  {#if summary.hasDifference}
-    <p class="mt-2 text-sm text-destructive">
-      Расхождение с операциями: {formatMoney(summary.differenceKopecks)}
-    </p>
+<Card.Root size="sm">
+  <Card.Header>
+    <Card.Title class="text-base">Чек · {formatMoney(summary.operationsNetKopecks)}</Card.Title>
+    <Card.Description>
+      Сумма: {formatMoney(receipt.amountKopecks)} · Скидка: {formatMoney(summary.discountKopecks)}
+      ({summary.effectivePermille === null ? '—' : formatPermille(summary.effectivePermille)})
+    </Card.Description>
+    {#if action}
+      <Card.Action>{@render action()}</Card.Action>
+    {/if}
+  </Card.Header>
+  {#if summary.hasDifference || receipt.comment}
+    <Card.Content class="flex flex-col gap-1">
+      {#if summary.hasDifference}
+        <p class="text-sm text-destructive">
+          Расхождение с операциями: {formatMoney(summary.differenceKopecks)}
+        </p>
+      {/if}
+      {#if receipt.comment}
+        <p class="text-sm">{receipt.comment}</p>
+      {/if}
+    </Card.Content>
   {/if}
-  {#if receipt.comment}
-    <p class="mt-2 text-sm">{receipt.comment}</p>
-  {/if}
-</article>
+</Card.Root>
