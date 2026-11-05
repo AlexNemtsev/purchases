@@ -8,7 +8,7 @@
 
   import { categoryForOperation } from '../../../entities/category';
   import type { Category } from '../../../entities/category';
-  import type { Operation, OperationRate } from '../../../entities/operation';
+  import type { Operation, OperationRate, ReceiptDiscountBase } from '../../../entities/operation';
   import { calculateOperationNet } from '../../../entities/operation';
   import { createId } from '../../../shared/api';
   import { MAX_COMMENT_LENGTH } from '../../../shared/config';
@@ -48,6 +48,11 @@
   let discountMode = $state<'amount' | 'percent'>('amount');
   let discountValue = $state(0);
   let discountValid = $state(true);
+  let receiptDiscountBase = $state<ReceiptDiscountBase>('afterOperationDiscount');
+  const receiptDiscountBaseOptions = [
+    { value: 'beforeOperationDiscount', label: 'До индивидуальной скидки' },
+    { value: 'afterOperationDiscount', label: 'После индивидуальной скидки' },
+  ];
   let error = $state('');
   let saving = $state(false);
 
@@ -82,6 +87,7 @@
       discountValue = operation.operationDiscount.permille;
     }
 
+    receiptDiscountBase = operation?.receiptDiscountBase ?? 'afterOperationDiscount';
     error = '';
     discountValid = true;
   });
@@ -108,6 +114,7 @@
             discountMode === 'amount'
               ? { mode: 'amount' as const, amountKopecks: discountValue }
               : { mode: 'percent' as const, permille: discountValue },
+          receiptDiscountBase,
         }
       : {}),
     createdAt: operation?.createdAt ?? '',
@@ -187,6 +194,7 @@
                 discountMode === 'amount'
                   ? { mode: 'amount', amountKopecks: discountValue }
                   : { mode: 'percent', permille: discountValue },
+              receiptDiscountBase,
             }
           : {}),
         createdAt: operation?.createdAt ?? timestamp,
@@ -289,6 +297,14 @@
               discountValue = value;
             }}
           />
+          <Field.Field>
+            <Label for="operation-receipt-discount-base">База скидки чека</Label>
+            <SelectField
+              id="operation-receipt-discount-base"
+              bind:value={receiptDiscountBase}
+              options={receiptDiscountBaseOptions}
+            />
+          </Field.Field>
         {/if}
         <Field.Field>
           <Label for="operation-comment">Комментарий</Label>

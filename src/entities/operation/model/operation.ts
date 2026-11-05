@@ -24,11 +24,13 @@ export const calculateOperationNet = (
   const base = operation.amountKopecks - refund;
   const operationDiscount = calculateOperationDiscount(operation, base);
   const afterOperationDiscount = base - operationDiscount;
+  const receiptDiscountBase =
+    operation.receiptDiscountBase === 'beforeOperationDiscount' ? base : afterOperationDiscount;
   const receiptDiscount =
     receiptRate && receiptRate.denominator !== 0
       ? Number(
           roundDiv(
-            BigInt(afterOperationDiscount) * BigInt(receiptRate.numerator),
+            BigInt(receiptDiscountBase) * BigInt(receiptRate.numerator),
             BigInt(receiptRate.denominator)
           )
         )
@@ -79,6 +81,14 @@ export const validateOperation = (
 
   if (operation.operationDiscount && validateDiscount(operation.operationDiscount)) {
     errors.push('invalid-discount');
+  }
+
+  if (
+    operation.receiptDiscountBase !== undefined &&
+    operation.receiptDiscountBase !== 'beforeOperationDiscount' &&
+    operation.receiptDiscountBase !== 'afterOperationDiscount'
+  ) {
+    errors.push('invalid-receipt-discount-base');
   }
 
   if (operation.comment.length > MAX_COMMENT_LENGTH) {

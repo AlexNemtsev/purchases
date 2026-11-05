@@ -45,6 +45,24 @@ describe('calculateOperationNet', () => {
     });
   });
 
+  it('can calculate the receipt discount before the operation discount', () => {
+    const result = calculateOperationNet(
+      operation({
+        operationDiscount: { mode: 'percent', permille: 100 },
+        receiptDiscountBase: 'beforeOperationDiscount',
+      }),
+      { numerator: 1500, denominator: 10_000 }
+    );
+
+    expect(result).toEqual({
+      base: 40_000,
+      operationDiscount: 4_000,
+      receiptDiscount: 6_000,
+      net: 30_000,
+      warnings: [],
+    });
+  });
+
   it('applies fixed operation discounts and reports negative net', () => {
     const result = calculateOperationNet(
       operation({ operationDiscount: { mode: 'amount', amountKopecks: 50_000 } }),
@@ -148,5 +166,14 @@ describe('validateOperation', () => {
 
     expect(errors).toContain('invalid-refund');
     expect(errors).toContain('invalid-discount');
+  });
+
+  it('validates the receipt discount base', () => {
+    expect(
+      validateOperation(
+        operation({ receiptDiscountBase: 'invalid' as Operation['receiptDiscountBase'] }),
+        true
+      )
+    ).toContain('invalid-receipt-discount-base');
   });
 });

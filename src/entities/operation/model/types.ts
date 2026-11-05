@@ -2,6 +2,8 @@ import type { AmountDiscount, PercentDiscount } from '../../../shared/lib/discou
 
 export type OperationDiscount = AmountDiscount | PercentDiscount;
 
+export type ReceiptDiscountBase = 'beforeOperationDiscount' | 'afterOperationDiscount';
+
 export interface Operation {
   id: string;
   receiptId: string;
@@ -10,6 +12,7 @@ export interface Operation {
   comment: string;
   refundKopecks?: number;
   operationDiscount?: OperationDiscount;
+  receiptDiscountBase?: ReceiptDiscountBase;
   createdAt: string;
   updatedAt: string;
 }
@@ -35,4 +38,5 @@ export type OperationValidationError =
   | 'category-required'
   | 'category-inactive'
   | 'invalid-discount'
+  | 'invalid-receipt-discount-base'
   | 'invalid-comment';

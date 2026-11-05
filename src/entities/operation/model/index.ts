@@ -10,6 +10,7 @@ export type {
   Operation,
   OperationCalculation,
   OperationRate,
+  ReceiptDiscountBase,
   OperationValidationError,
   OperationWarning,
 } from './types';
